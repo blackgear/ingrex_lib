@@ -26,10 +26,10 @@ class Intel(object):
             'latE6': (field['maxLatE6'] + field['minLatE6']) >> 1,
             'lngE6': (field['maxLngE6'] + field['minLngE6']) >> 1,
         }
-        self.load_version()
+        self.refresh_version()
 
-    def load_version(self):
-        "load api version for request"
+    def refresh_version(self):
+        "refresh api version for request"
         request = requests.get('https://www.ingress.com/intel', headers=self.headers)
         self.version = re.findall(r'gen_dashboard_(\w*)\.js', request.text)[0]
 
@@ -37,7 +37,7 @@ class Intel(object):
         "raw request with auto-retry and connection check function"
         payload['v'] = self.version
         request = requests.post(url, data=json.dumps(payload), headers=self.headers)
-        return request.json()
+        return request.json()['result']
 
     def fetch_msg(self, mints=-1, maxts=-1, reverse=False, tab='all'):
         "fetch message from Ingress COMM"
@@ -53,7 +53,7 @@ class Intel(object):
         }
         if reverse:
             payload['ascendingTimestampOrder'] = True
-        return self.fetch(url, payload)['result']
+        return self.fetch(url, payload)
 
     def fetch_map(self, tilekeys):
         "fetch game entities from Ingress map"
@@ -61,7 +61,7 @@ class Intel(object):
         payload = {
             'tileKeys': tilekeys
         }
-        return self.fetch(url, payload)['result']
+        return self.fetch(url, payload)
 
 
     def fetch_portal(self, guid):
@@ -70,13 +70,13 @@ class Intel(object):
         payload = {
             'guid': guid
         }
-        return self.fetch(url, payload)['result']
+        return self.fetch(url, payload)
 
     def fetch_score(self):
         "fetch the global score of RESISTANCE and ENLIGHTENED"
         url = 'https://www.ingress.com/r/getGameScore'
         payload = {}
-        return self.fetch(url, payload)['result']
+        return self.fetch(url, payload)
 
     def fetch_region(self):
         "fetch the region info of RESISTANCE and ENLIGHTENED"
@@ -85,13 +85,13 @@ class Intel(object):
             'lngE6': self.point['lngE6'],
             'latE6': self.point['latE6'],
         }
-        return self.fetch(url, payload)['result']
+        return self.fetch(url, payload)
 
     def fetch_artifacts(self):
         "fetch the artifacts details"
-        url = 'https://www.ingress.com/r/artifacts'
+        url = 'https://www.ingress.com/r/getArtifactPortals'
         payload = {}
-        return self.fetch(url, payload)['artifacts']
+        return self.fetch(url, payload)
 
     def send_msg(self, msg, tab='all'):
         "send a message to Ingress COMM"
@@ -102,7 +102,7 @@ class Intel(object):
             'lngE6': self.point['lngE6'],
             'tab': tab
         }
-        return self.fetch(url, payload)['artifacts']
+        return self.fetch(url, payload)
 
     def send_invite(self, address):
         "send a recruit to an email address"
@@ -110,7 +110,7 @@ class Intel(object):
         payload = {
             'inviteeEmailAddress': address
         }
-        return self.fetch(url, payload)['artifacts']
+        return self.fetch(url, payload)
 
     def redeem_code(self, passcode):
         "redeem a passcode"
@@ -118,7 +118,7 @@ class Intel(object):
         payload = {
             'passcode': passcode
         }
-        return self.fetch(url, payload)['artifacts']
+        return self.fetch(url, payload)
 
 if __name__ == '__main__':
     pass
