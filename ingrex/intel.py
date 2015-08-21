@@ -40,7 +40,7 @@ class Intel(object):
         return request.json()['result']
 
     def fetch_msg(self, mints=-1, maxts=-1, reverse=False, tab='all'):
-        "fetch message from Ingress COMM"
+        "fetch message from Ingress COMM, tab can be 'all', 'faction', 'alerts'"
         url = 'https://www.ingress.com/r/getPlexts'
         payload = {
             'maxLatE6': self.field['maxLatE6'],
@@ -94,7 +94,7 @@ class Intel(object):
         return self.fetch(url, payload)
 
     def send_msg(self, msg, tab='all'):
-        "send a message to Ingress COMM"
+        "send a message to Ingress COMM, tab can be 'all', 'faction'"
         url = 'https://www.ingress.com/r/sendPlext'
         payload = {
             'message': msg,
