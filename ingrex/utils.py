@@ -2,7 +2,7 @@
 from math import pi, sin, cos, tan, asin, radians, sqrt, log
 
 def calc_tile(lng, lat, zoomlevel):
-    tilecounts = [0, 0, 0, 256, 512, 512, 512, 2048, 2048, 4096, 4096, 6500, 6500, 6500, 18000, 18000, 36000, 36000, 36000, 36000, 36000, 36000]
+    tilecounts = [1,1,1,40,40,80,80,320,1E3,2E3,2E3,4E3,8E3,16E3,16E3,32E3]
     rlat = radians(lat)
     tilecount = tilecounts[zoomlevel]
     xtile = int((lng + 180.0) / 360.0 * tilecount)

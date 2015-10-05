@@ -18,3 +18,5 @@ use the format like this:
 You can copy the cookies with this format from Chrome's F12.
 
 The comm.py shows how to write a simple COMM monitor.
+
+The field.py shows how to write a simple Map infomation downloader.
